@@ -14,22 +14,22 @@ static ssize_t device_file_read(
     struct file *file_ptr
     , char __user *user_buffer
     , size_t count
-    , loff_t *possition)
+    , loff_t *position)
 {
     printk( KERN_NOTICE "Simple-driver: Device file is read at offset = %i, read bytes count = %u\n"
-        , (int)*possition
+        , (int)*position
         , (unsigned int)count );
 
-    if( *possition >= g_s_Hello_World_size )
+    if( *position >= g_s_Hello_World_size )
         return 0;
 
-    if( *possition + count > g_s_Hello_World_size )
-        count = g_s_Hello_World_size - *possition;
+    if( *position + count > g_s_Hello_World_size )
+        count = g_s_Hello_World_size - *position;
 
-    if( copy_to_user(user_buffer, g_s_Hello_World_string + *possition, count) != 0 )
+    if( copy_to_user(user_buffer, g_s_Hello_World_string + *position, count) != 0 )
         return -EFAULT;
 
-    *possition += count;
+    *position += count;
     return count;
 }
 
